@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interview Debrief — Java Full Stack</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --cream: #f5f0e8;
+    --accent: #e94560;
+    --accent-soft: #e9456020;
+    --teal: #0f3460;
+    --teal-soft: #0f346015;
+    --gold: #c4a35a;
+    --paper: #faf7f2;
+    --shadow: rgba(26, 26, 46, 0.08);
+    --border: #d4cfc5;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* HERO */
+  .hero {
+    background: var(--teal);
+    color: var(--cream);
+    padding: 80px 40px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+    opacity: 0.1;
+    border-radius: 50%;
+  }
+  .hero::after {
+    content: '{ }';
+    position: absolute;
+    bottom: 20px;
+    right: 40px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 120px;
+    opacity: 0.05;
+    color: var(--cream);
+    line-height: 1;
+  }
+  .hero-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+  .hero .tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+    display: inline-block;
+    border: 1px solid var(--gold);
+    padding: 4px 12px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.2s;
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 400;
+    line-height: 1.15;
+    margin-bottom: 16px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.4s;
+  }
+  .hero h1 em {
+    color: var(--accent);
+    font-style: italic;
+  }
+  .hero .subtitle {
+    font-size: 1.1rem;
+    font-weight: 300;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.6s;
+    max-width: 600px;
+    color: #b8b5ad;
+  }
+
+  /* CONTENT */
+  .content {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 60px 40px 80px;
+  }
+
+  .intro-note {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.4rem;
+    line-height: 1.7;
+    color: var(--teal);
+    margin-bottom: 50px;
+    padding-left: 24px;
+    border-left: 3px solid var(--accent);
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.8s;
+  }
+
+  /* TOPIC CARDS */
+  .topic-grid {
+    display: grid;
+    gap: 0;
+  }
+
+  .topic {
+    border-bottom: 1px solid var(--border);
+    padding: 36px 0;
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 24px;
+    align-items: start;
+    opacity: 0;
+    animation: fadeUp 0.5s ease forwards;
+  }
+  .topic:first-child { border-top: 1px solid var(--border); }
+
+  .topic-number {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--accent);
+    background: var(--accent-soft);
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .topic-body h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.45rem;
+    font-weight: 400;
+    margin-bottom: 10px;
+    color: var(--ink);
+    transition: color 0.2s;
+  }
+  .topic:hover .topic-body h2 {
+    color: var(--accent);
+  }
+
+  .topic-body p {
+    font-size: 0.95rem;
+    color: #555;
+    line-height: 1.75;
+  }
+
+  .topic-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .topic-tags span {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    background: var(--teal-soft);
+    color: var(--teal);
+    padding: 4px 10px;
+    border-radius: 4px;
+    letter-spacing: 0.3px;
+  }
+
+  /* DIFFICULTY DOTS */
+  .difficulty {
+    display: inline-flex;
+    gap: 4px;
+    margin-left: 12px;
+    vertical-align: middle;
+  }
+  .difficulty .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border);
+  }
+  .difficulty .dot.filled { background: var(--accent); }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    padding: 40px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: #999;
+    letter-spacing: 1px;
+  }
+  .footer .line {
+    width: 60px;
+    height: 2px;
+    background: var(--accent);
+    margin: 0 auto 16px;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .topic:nth-child(1) { animation-delay: 0.9s; }
+  .topic:nth-child(2) { animation-delay: 1.0s; }
+  .topic:nth-child(3) { animation-delay: 1.1s; }
+  .topic:nth-child(4) { animation-delay: 1.2s; }
+  .topic:nth-child(5) { animation-delay: 1.3s; }
+  .topic:nth-child(6) { animation-delay: 1.4s; }
+  .topic:nth-child(7) { animation-delay: 1.5s; }
+  .topic:nth-child(8) { animation-delay: 1.6s; }
+  .topic:nth-child(9) { animation-delay: 1.7s; }
+  .topic:nth-child(10) { animation-delay: 1.8s; }
+  .topic:nth-child(11) { animation-delay: 1.9s; }
+  .topic:nth-child(12) { animation-delay: 2.0s; }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .hero { padding: 60px 24px 40px; }
+    .hero::after { font-size: 80px; right: 20px; }
+    .content { padding: 40px 24px 60px; }
+    .topic { grid-template-columns: 1fr; gap: 12px; padding: 28px 0; }
+    .topic-number { width: 36px; height: 36px; font-size: 12px; }
+    .intro-note { font-size: 1.15rem; }
+  }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="tag">Interview Debrief</div>
+    <h1>What They Asked Me in a <em>Java Full Stack</em> Interview</h1>
+    <p class="subtitle">A complete walkthrough of every topic that came up — from Streams to Security, SQL to Spring Boot internals.</p>
+  </div>
+</section>
+
+<section class="content">
+
+  <p class="intro-note">
+    The interview wasn't just about getting the right answer — it tested how well you connect the dots between code, architecture, and real-world decisions.
+  </p>
+
+  <div class="topic-grid">
+
+    <!-- 1 -->
+    <div class="topic">
+      <div class="topic-number">01</div>
+      <div class="topic-body">
+        <h2>Java 8 Streams — Think in Pipelines
+          <span class="difficulty"><span class="dot filled"></span><span class="dot filled"></span><span class="dot"></span></span>
+        </h2>
+        <p>They gave a list of transactions and asked to group them by type and sum up the total amount per type. Classic <code>Collectors.groupingBy()</code> with <code>Collectors.summingDouble()</code>. They're testing whether you think declaratively — not just loop-and-accumulate.</p>
+        <div class="topic-tags">
+          <span>Stream API</span>
+          <span>Collectors</span>
+          <span>groupingBy</span>
+          <span>Functional Java</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="topic">
+      <div class="topic-number">02</div>
+      <div class="topic-body">
+        <h2>SQL — The Query That Never Gets Old
+          <span class="difficulty"><span class="dot filled"></span><span class="dot filled"></span><span class="dot"></span></span>
+        </h2>
+        <p>Write a query to find total quantity sold per product in the last 30 days. Straightforward — <code>GROUP BY product_id</code> with a <code>WHERE order_date >= NOW() - INTERVAL 30 DAY</code>. But they're really watching how you handle date filtering, aggregation, and whether you mention indexing for performance.</p>
+        <div class="topic-tags">
+          <span>GROUP BY</span>
+          <span>Date Filtering</span>
+          <span>Aggregation</span>
+          <span>Indexing</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="topic">
+      <div class="topic-number">03</div>
+      <div class="topic-body">
+        <h2>JPA — Same Query, Application Layer
+          <span class="difficulty"><span class="dot filled"></span><span class="dot filled"></span><span class="dot"></span></span>
+        </h2>
+        <p>They took the same SQL question and flipped it: how would you do this from the app? Expecting you to compare Spring Data JPA derived queries, <code>@Query</code> with JPQL, native queries, and the Criteria API — and know when each one makes sense.</p>
+        <div class="topic-tags">
+          <span>Spring Data JPA</span>
+          <span>JPQL</span>
+          <span>Criteria API</span>
+          <span>Repository Pattern</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="topic">
+      <div class="topic-number">04</div>
+      <div class="topic-body">
+        <h2>REST API Design — Beyond Just CRUD
+          <span class="difficulty"><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span></span>
+        </h2>
+        <p>Build <code>/employees/{id}</code> — simple, right? But they wanted proper HTTP semantics: 200 for success, 404 when not found, 500 for server errors. Then they pushed into <code>@ControllerAdvice</code> for global exception handling. They want to see you design APIs that behave correctly, not just return data.</p>
+        <div class="topic-tags">
+          <span>@RestController</span>
+          <span>ResponseEntity</span>
+          <span>@ControllerAdvice</span>
+          <span>HTTP Status Codes</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="topic">
+      <div class="topic-number">05</div>
+      <div class="topic-body">
+        <h2>Secure Coding — The SQL Injection Conversation
+          <span class="difficulty"><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span></span>
+        </h2>
+        <p>How do you prevent SQL injection? Separate query structure from input — parameterized queries, prepared statements, never concatenating user input. They also asked about real vulnerabilities you've handled and how you identified them. They want proof you think about security in practice, not theory.</p>
+        <div class="topic-tags">
+          <span>PreparedStatement</span>
+          <span>Parameterized Queries</span>
+          <span>OWASP</span>
+          <span>Vulnerability Management</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6 -->
+    <div class="topic">
+      <div class="topic-number">06</div>
+      <div class="topic-body">
+        <h2>Java Fundamentals — Back to Roots
+          <span class="difficulty"><span class="dot filled"></span><span class="dot"></span><span class="dot"></span></span>
+        </h2>
+        <p>What's a Predicate in Java 8? It's a functional interface that takes input and returns boolean — the building block of filtering in Streams. Then came OOP principles — encapsulation, inheritance, polymorphism, abstraction. Sounds basic, but explaining polymorphism with a real example separates good from great.</p>
+        <div class="topic-tags">
+          <span>Predicate&lt;T&gt;</span>
+          <span>Functional Interfaces</span>
+          <span>OOP</span>
+          <span>Polymorphism</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7 -->
+    <div class="topic">
+      <div class="topic-number">07</div>
+      <div class="topic-body">
+        <h2>Spring Boot Internals — What's Really Happening
+          <span class="difficulty"><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span></span>
+        </h2>
+        <p>How does Spring Boot differ from traditional Spring? Auto-configuration, embedded servers, opinionated defaults, starter POMs. Then the deep cut: <em>how does auto-configuration actually work?</em> — <code>@EnableAutoConfiguration</code>, <code>spring.factories</code> / <code>AutoConfiguration.imports</code>, <code>@Conditional</code> annotations. This is where you show you've looked under the hood.</p>
+        <div class="topic-tags">
+          <span>Auto-configuration</span>
+          <span>@Conditional</span>
+          <span>Starter POMs</span>
+          <span>Embedded Tomcat</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8 -->
+    <div class="topic">
+      <div class="topic-number">08</div>
+      <div class="topic-body">
+        <h2>Architecture — Microservices Under the Microscope
+          <span class="difficulty"><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span></span>
+        </h2>
+        <p>How do microservices communicate? REST, gRPC, message queues — and when to use which. Then the challenge: is your project <em>actually</em> microservices, or just a distributed monolith? They also probed design patterns used — Saga, Circuit Breaker, API Gateway. This tests architectural honesty.</p>
+        <div class="topic-tags">
+          <span>Service Communication</span>
+          <span>Design Patterns</span>
+          <span>Distributed Monolith</span>
+          <span>Architectural Honesty</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 9 -->
+    <div class="topic">
+      <div class="topic-number">09</div>
+      <div class="topic-body">
+        <h2>Performance Optimization — Make It Fast
+          <span class="difficulty"><span class="dot filled"></span><span class="dot filled"></span><span class="dot"></span></span>
+        </h2>
+        <p>What optimization techniques did you use in your last project? They want concrete answers — query optimization with execution plans, connection pooling (HikariCP), caching strategies (Redis, Spring Cache), lazy vs eager loading, database indexing, N+1 query detection. Real war stories win here.</p>
+        <div class="topic-tags">
+          <span>Query Tuning</span>
+          <span>Caching</span>
+          <span>HikariCP</span>
+          <span>N+1 Problem</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 10 -->
+    <div class="topic">
+      <div class="topic-number">10</div>
+      <div class="topic-body">
+        <h2>DevOps Awareness — Ship It
+          <span class="difficulty"><span class="dot filled"></span><span class="dot"></span><span class="dot"></span></span>
+        </h2>
+        <p>CI/CD involvement — do you just push code and pray, or do you understand the pipeline? Jenkins, GitHub Actions, Azure DevOps. Then Kubernetes: do you know pods, services, deployments, config maps? They're not expecting a DevOps engineer, but they want someone who isn't blind past <code>git push</code>.</p>
+        <div class="topic-tags">
+          <span>CI/CD</span>
+          <span>Kubernetes</span>
+          <span>Docker</span>
+          <span>Pipeline Awareness</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 11 -->
+    <div class="topic">
+      <div class="topic-number">11</div>
+      <div class="topic-body">
+        <h2>UI-Backend Integration — Bridging the Gap
+          <span class="difficulty"><span class="dot filled"></span><span class="dot filled"></span><span class="dot"></span></span>
+        </h2>
+        <p>How do you call APIs from React? Axios vs fetch, async/await, error handling, loading states. What's your role in frontend-backend integration — do you just hand off a Swagger doc, or do you sit with the frontend team and debug CORS issues together? They want a full-stack mindset, not just a backend dev who tolerates React.</p>
+        <div class="topic-tags">
+          <span>React + Spring Boot</span>
+          <span>Axios / Fetch</span>
+          <span>CORS</span>
+          <span>API Contract</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 12 -->
+    <div class="topic">
+      <div class="topic-number">12</div>
+      <div class="topic-body">
+        <h2>Security Deep Dive — Lock It Down
+          <span class="difficulty"><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span></span>
+        </h2>
+        <p>Authentication vs Authorization — who are you vs what can you do. Then the stack: JWT, Basic Auth, OAuth — and when each fits. How does JWT validation work in Spring Boot? Filters. Which led to: Filters vs Interceptors — Filters are servlet-level (before Spring), Interceptors are Spring MVC-level (after DispatcherServlet). This is where depth matters.</p>
+        <div class="topic-tags">
+          <span>JWT</span>
+          <span>OAuth 2.0</span>
+          <span>Spring Security</span>
+          <span>Filters vs Interceptors</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="footer">
+  <div class="line"></div>
+  INTERVIEW PREP — JAVA FULL STACK — 2026
+</div>
+
+</body>
+</html>
